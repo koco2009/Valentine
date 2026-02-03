@@ -1,0 +1,193 @@
+<!-- PAGE 2 FULL FUNCTIONALITY: 2 CARDS, NO OVERLAP, FIXED SYNTAX -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be My Valentine?</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('background_image.jpg') center / cover no-repeat;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    #textCard {
+      font-size: 25px;
+      line-height: 1.5;
+      font-family: monospace;
+    }
+
+    #buttonCard {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: 20px;
+      flex-wrap: wrap;           /* allow buttons to move instead of clipping */
+      overflow: visible;         /* DO NOT hide content */
+    }
+
+    button {
+      /* IMPORTANT: remove flex-grow so width changes actually show */
+      flex: 0 0 auto;
+      padding: 14px 10px;
+      font-size: 1rem;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      min-width: 120px;
+      transition: width 0.3s ease, padding 0.3s ease, font-size 0.3s ease, background 0.3s ease;
+    }
+
+    #yesBtn {
+      background: linear-gradient(135deg, #ff5fa2, #ff9acb);
+      color: white;
+      max-width: 100%;
+    }
+
+    #noBtn {
+      background: #eee;
+      color: #333;
+      max-width: 100%;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.3;
+    }
+
+    @media (max-width: 400px) {
+      #buttonCard {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- CARD 1: TEXT -->
+    <div class="card" id="textCard">
+      perhaps maybe this redesigned webpage u might like? 🤭<br>
+      so now yes? 🤔
+    </div>
+
+    <!-- CARD 2: BOTH BUTTONS -->
+    <div class="card" id="buttonCard">
+      <button id="yesBtn">YES 💖</button>
+      <button id="noBtn">NO</button>
+    </div>
+
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const textCard = document.getElementById('textCard');
+
+    let yesGrow = 0;   // controls YES overall size growth   // controls YES width growth
+    let noStep = 0;    // NO button state
+    let yesStep = 0;   // YES button state
+
+    const noFlow = [
+      {
+        text: "perhaps maybe this redesigned webpage u might like? 🤭<br>so now yes? 🤔",
+        noBtn: "NO 😶"
+      },
+      {
+        text: "are u sure? 🤨",
+        noBtn: "are u sure? 🤨"
+      },
+      {
+        text: "maybe this chocolate may brighten the mood up 😍? did it or still not 😮‍💨?",
+        noBtn: "maybe this chocolate may brighten the mood up 😍?"
+      },
+      {
+        text: "hmmm bruh 🤨 are u really sureee?? 🤨🤨",
+        noBtn: "hmmm bruh 🤨 are u really sureee??"
+      },
+      {
+        text: "okay then maybe this small cute card will make it a yes 💌<br>you should sign it if it is a yes 🙃",
+        noBtn: "okay then maybe this small cute card will make it a yes 🙃"
+      }
+    ];
+
+    noBtn.addEventListener('click', () => {
+      if (noStep < noFlow.length - 1) noStep++;
+
+      textCard.innerHTML = noFlow[noStep].text;
+      noBtn.textContent = noFlow[noStep].noBtn;
+
+      // Grow YES button (WHOLE button: width + padding + text)
+      yesGrow += 1;
+      // Grow YES button but cap it so layout never breaks
+      const maxYesWidth = 260;
+      const newWidth = 120 + yesGrow * 20;
+      yesBtn.style.width = `${Math.min(newWidth, maxYesWidth)}px`;
+
+      // Height + text growth
+      yesBtn.style.padding = `${14 + yesGrow * 2}px ${10 + yesGrow * 2}px`;
+      yesBtn.style.fontSize = `${Math.min(1 + yesGrow * 0.08, 1.6)}rem`;
+
+      // If YES is too big, stack buttons vertically
+      if (newWidth >= maxYesWidth) {
+        document.getElementById('buttonCard').style.flexDirection = 'column';
+      } `${120 + yesGrow * 20}px`;
+      yesBtn.style.padding = `${14 + yesGrow * 2}px ${10 + yesGrow * 2}px`;
+      yesBtn.style.fontSize = `${Math.min(1 + yesGrow * 0.08, 1.6)}rem`;
+
+      // Final step: hide NO after 15s
+      if (noStep === noFlow.length - 1) {
+        setTimeout(() => {
+          noBtn.style.display = 'none';
+        }, 15000);
+      }
+    });
+
+    yesBtn.addEventListener('click', () => {
+      // If NO reached final stage → go to page 3
+      if (noStep === noFlow.length - 1) {
+        window.location.href = 'page3.html';
+        return;
+      }
+
+      // YES FLOW (manual clicks only)
+      if (yesStep === 0) {
+        textCard.innerHTML = "woah really? here's a chocolate 🍫 but are u really sure 😍";
+        yesStep++;
+      } else if (yesStep === 1) {
+        textCard.innerHTML = "perhaps make it official by signing on the card plsss 😝😝😝";
+        yesStep++;
+      } else if (yesStep === 2) {
+        yesBtn.textContent = "done?";
+        yesStep++;
+      } else {
+        window.location.href = 'page3.html';
+      }
+    });
+  </script>
+
+</body>
+</html>

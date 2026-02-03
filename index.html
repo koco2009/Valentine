@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- ================= PAGE 1 ================= -->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Be My Valentine?</title>
+        <style>
+            
+        </style>
+</head>
+<body>
+<div>
+<h1>Will you be my Valentine?</h1>
+<button id="yes">Yes</button>
+<button id="no">No</button>
+</div>
+
+
+<script>
+let yesSteps = [
+"are you sure u wanna choose me🤨",
+"really?????😃",
+"woah mehak kabra choosing me🤯, u should def have this chocolate i got u 🤔 u might like it 🤭",
+"since u really choosing it, then u might wanna sign it to make it official 😍"
+];
+let count = 0;
+
+
+document.getElementById('yes').onclick = () => {
+if(count < yesSteps.length){
+document.getElementById('yes').innerText = yesSteps[count];
+count++;
+if(count === yesSteps.length){
+setTimeout(()=>{
+document.getElementById('yes').innerText = 'done?';
+},10000);
+}
+} else {
+window.location.href = 'page3.html';
+}
+};
+
+
+document.getElementById('no').onclick = () => {
+window.location.href = 'page2.html';
+};
+</script>
+</body>
+</html>
